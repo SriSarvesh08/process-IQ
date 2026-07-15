@@ -2,7 +2,10 @@ const Task = require('../models/Task');
 
 // Mock AI processing function ported from Python worker
 function processTaskSync(operation, text) {
-  const input_str = text || "";
+  let input_str = "";
+  if (text) {
+      input_str = typeof text === 'string' ? text : JSON.stringify(text);
+  }
   
   if (operation === "Text Summary") {
       if (!input_str) return "No text provided to summarize.";
