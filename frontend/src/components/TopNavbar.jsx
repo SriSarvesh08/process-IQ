@@ -87,27 +87,7 @@ const TopNavbar = () => {
       {/* Right Side Actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
         
-        {/* Create Button */}
-        <button 
-          onClick={() => navigate('/tasks/create')}
-          style={{ 
-            display: 'flex', alignItems: 'center', gap: '6px',
-            padding: '0.4rem 0.875rem', 
-            backgroundColor: '#2563EB', 
-            color: '#FFFFFF', 
-            border: 'none', 
-            borderRadius: '9999px',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1D4ED8'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563EB'}
-        >
-          <Plus size={16} strokeWidth={2.5} />
-          Create Task
-        </button>
+
 
         {/* Bell Icon */}
         <button style={{ 

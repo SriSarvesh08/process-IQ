@@ -393,8 +393,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* 4th Row: Activity & Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 4th Row: Activity */}
+        <div className="grid grid-cols-1 gap-6">
           <div style={cardStyle}>
             <h3 className="font-bold text-lg text-slate-900 mb-6">Recent Activity Timeline</h3>
             <div className="relative pl-6 border-l-2 border-slate-200 ml-4 space-y-8 mt-4">
@@ -412,53 +412,6 @@ const Dashboard = () => {
                   </div>
                 ))
               )}
-            </div>
-          </div>
-
-          <div style={cardStyle}>
-            <h3 className="font-bold text-lg text-slate-900 mb-6">Quick Actions</h3>
-            <div className="grid grid-cols-2 gap-4">
-              
-              <Link to="/tasks/create">
-                <motion.div whileHover={{ y: -4, borderColor: '#3B82F6', boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.1)' }} className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm cursor-pointer h-full transition-all group">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <Plus size={22} strokeWidth={2.5} />
-                  </div>
-                  <h4 className="font-bold text-slate-900 mb-1">Create Task</h4>
-                  <p className="text-xs text-slate-500 font-medium">Initialize a new AI process.</p>
-                </motion.div>
-              </Link>
-
-              <Link to="/tasks">
-                <motion.div whileHover={{ y: -4, borderColor: '#10B981', boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.1)' }} className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm cursor-pointer h-full transition-all group">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                    <List size={22} strokeWidth={2.5} />
-                  </div>
-                  <h4 className="font-bold text-slate-900 mb-1">View Tasks</h4>
-                  <p className="text-xs text-slate-500 font-medium">Browse processing history.</p>
-                </motion.div>
-              </Link>
-
-              <Link to="/settings">
-                <motion.div whileHover={{ y: -4, borderColor: '#6366F1', boxShadow: '0 10px 15px -3px rgba(99, 102, 241, 0.1)' }} className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm cursor-pointer h-full transition-all group">
-                  <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                    <Settings size={22} strokeWidth={2.5} />
-                  </div>
-                  <h4 className="font-bold text-slate-900 mb-1">Settings</h4>
-                  <p className="text-xs text-slate-500 font-medium">Manage billing & profile.</p>
-                </motion.div>
-              </Link>
-
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <motion.div whileHover={{ y: -4, borderColor: '#F59E0B', boxShadow: '0 10px 15px -3px rgba(245, 158, 11, 0.1)' }} className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm cursor-pointer h-full transition-all group">
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                    <ExternalLink size={22} strokeWidth={2.5} />
-                  </div>
-                  <h4 className="font-bold text-slate-900 mb-1">API Docs</h4>
-                  <p className="text-xs text-slate-500 font-medium">Read integration guides.</p>
-                </motion.div>
-              </a>
-
             </div>
           </div>
         </div>
