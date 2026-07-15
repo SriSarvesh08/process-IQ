@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 class Config:
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/shoppilot_auth")
-    DB_NAME = "shoppilot_auth" # We extract the db name from URI or just hardcode if standard
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/test")
+    DB_NAME = "test" # Mongoose defaults to "test" if no database is specified in URI
     
     # Alternatively parse DB_NAME from MONGO_URI
     if MONGO_URI.rsplit('/', 1)[-1]:
