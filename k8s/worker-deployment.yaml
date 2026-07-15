@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+  namespace: shoppilot
+  labels:
+    app: shoppilot
+    component: worker
+    version: "1.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shoppilot
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: shoppilot
+        component: worker
+        version: "1.0"
+    spec:
+      containers:
+        - name: worker
+          image: shoppilot-worker:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: shoppilot-secret
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"

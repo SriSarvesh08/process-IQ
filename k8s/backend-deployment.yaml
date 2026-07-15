@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: shoppilot
+  labels:
+    app: shoppilot
+    component: backend
+    version: "1.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shoppilot
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: shoppilot
+        component: backend
+        version: "1.0"
+    spec:
+      containers:
+        - name: backend
+          image: shoppilot-backend:latest # Assumes local image is built
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: shoppilot-config
+            - secretRef:
+                name: shoppilot-secret
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
+          livenessProbe:
+            httpGet:
+              path: /api/tasks
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /api/tasks
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10

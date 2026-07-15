@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mern_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mern_network
+
+  backend:
+    build: ./backend
+    container_name: mern_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/shoppilot_auth
+      - JWT_SECRET=supersecretjwtkey_please_change_in_prod
+      - JWT_EXPIRE=30d
+    depends_on:
+      - mongodb
+    networks:
+      - mern_network
+
+  worker:
+    build: ./worker
+    container_name: mern_worker
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/shoppilot_auth
+    depends_on:
+      - mongodb
+    networks:
+      - mern_network
+
+  frontend:
+    build: ./frontend
+    container_name: mern_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+      - VITE_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - mern_network
+
+volumes:
+  mongo-data:
+
+networks:
+  mern_network:
+    driver: bridge
