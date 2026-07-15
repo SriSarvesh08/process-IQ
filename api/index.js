@@ -1,6 +1,6 @@
 require('dotenv').config();
-const app = require('../app');
-const connectDB = require('../config/db');
+const app = require('../backend/app');
+const connectDB = require('../backend/config/db');
 
 // Connect to database before handling the request
 connectDB();
