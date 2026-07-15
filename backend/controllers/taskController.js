@@ -1,5 +1,44 @@
 const Task = require('../models/Task');
 
+// Mock AI processing function ported from Python worker
+function processTaskSync(operation, text) {
+  const input_str = text || "";
+  
+  if (operation === "Text Summary") {
+      if (!input_str) return "No text provided to summarize.";
+      const sentences = input_str.replace(/!/g, '.').replace(/\?/g, '.').split('.');
+      const summary = sentences.map(s => s.trim()).filter(s => s).slice(0, 2).join('. ');
+      return summary ? summary + "." : input_str;
+  } 
+  
+  else if (operation === "Sentiment Analysis") {
+      const text_lower = input_str.toLowerCase();
+      const positive_words = ['good', 'great', 'awesome', 'excellent', 'happy', 'love', 'positive'];
+      const negative_words = ['bad', 'terrible', 'awful', 'sad', 'hate', 'negative', 'poor'];
+      
+      let pos_count = 0;
+      let neg_count = 0;
+      
+      positive_words.forEach(word => { if (text_lower.includes(word)) pos_count++; });
+      negative_words.forEach(word => { if (text_lower.includes(word)) neg_count++; });
+      
+      if (pos_count > neg_count) return "Positive";
+      if (neg_count > pos_count) return "Negative";
+      return "Neutral";
+  } 
+  
+  else if (operation === "Keyword Extraction") {
+      if (!input_str) return "[]";
+      const words = input_str.split(/\s+/);
+      const keywords = [...new Set(words.map(w => w.replace(/[,.!?]/g, '').trim()).filter(w => w.length > 4))];
+      // Note: we can return a JSON array string if the frontend expects it, or a comma-separated list.
+      // We will return a JSON string to match Python list serialization behavior when stored in DB.
+      return JSON.stringify(keywords.slice(0, 5).map(w => w.replace(/'/g, '')));
+  }
+  
+  return "Unsupported operation";
+}
+
 // @desc    Create a new task
 // @route   POST /api/tasks
 // @access  Private
@@ -12,12 +51,16 @@ const createTask = async (req, res, next) => {
       throw new Error('Please provide title and operation');
     }
 
+    // Process the AI task synchronously!
+    const result = processTaskSync(operation, inputData);
+
     const task = await Task.create({
       title,
       description,
       operation,
       inputData,
-      status: 'Pending',
+      status: 'Completed',
+      result: result,
       createdBy: req.user.id,
     });
 
