@@ -1,11 +1,16 @@
 import React, { useContext } from 'react';
-import { Bell, Plus, LayoutDashboard, CheckSquare, BarChart2, Activity, Users, Settings } from 'lucide-react';
+import { Bell, Plus, LayoutDashboard, CheckSquare, BarChart2, Activity, Users, Settings, LogOut } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 const TopNavbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const location = useLocation();
 
@@ -134,6 +139,24 @@ const TopNavbar = () => {
             </span>
           </div>
         </div>
+
+        {/* Divider */}
+        <div style={{ width: '1px', height: '24px', backgroundColor: '#E2E8F0' }}></div>
+
+        {/* Logout Button */}
+        <button 
+          onClick={handleLogout}
+          style={{ 
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '6px', borderRadius: '6px', transition: 'background-color 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#FEE2E2'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          title="Logout"
+        >
+          <LogOut size={18} strokeWidth={2.5} />
+        </button>
 
       </div>
     </header>
