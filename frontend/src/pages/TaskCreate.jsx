@@ -30,7 +30,7 @@ const TaskCreate = () => {
     // Pass title and description inside inputData if they exist (or backend might ignore them)
     // The strict requirement is just to keep backend APIs unchanged
     try {
-      await axios.post('http://localhost:5001/api/tasks', { title, description, operation, inputData: parsedData }, {
+      await axios.post((import.meta.env.VITE_API_URL || '') + '/api/tasks', { title, description, operation, inputData: parsedData }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       toast.success('Task created successfully');

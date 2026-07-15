@@ -29,7 +29,7 @@ const Dashboard = () => {
 
     const fetchTasks = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/tasks', {
+        const res = await axios.get((import.meta.env.VITE_API_URL || '') + '/api/tasks', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setTasks(res.data);

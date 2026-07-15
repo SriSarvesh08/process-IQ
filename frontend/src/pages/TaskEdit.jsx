@@ -30,7 +30,7 @@ const TaskEdit = () => {
       try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const res = await axios.get(`http://localhost:5001/api/tasks/${id}`, config);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, config);
         setFormData({
           title: res.data.title || '',
           description: res.data.description || '',
@@ -57,7 +57,7 @@ const TaskEdit = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.put(`http://localhost:5001/api/tasks/${id}`, formData, config);
+      await axios.put(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, formData, config);
       toast.success('Task updated successfully');
       navigate('/tasks');
     } catch (err) {

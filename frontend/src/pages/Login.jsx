@@ -37,7 +37,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5001/api/auth/login', formData);
+      const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/login', formData);
       login(res.data, res.data.token);
       toast.success('Welcome back!');
       navigate('/dashboard');
@@ -57,10 +57,10 @@ const Login = () => {
       const googleUser = { name: 'Google User', email: 'demo@google.com', password: 'secureGooglePassword123!' };
       
       try {
-        const res = await axios.post('http://localhost:5001/api/auth/login', { email: googleUser.email, password: googleUser.password });
+        const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/login', { email: googleUser.email, password: googleUser.password });
         login(res.data, res.data.token);
       } catch {
-        const res = await axios.post('http://localhost:5001/api/auth/register', googleUser);
+        const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/register', googleUser);
         login(res.data, res.data.token);
       }
       toast.success('Google Sign-In successful!', { id: 'google' });

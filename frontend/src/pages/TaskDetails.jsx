@@ -20,7 +20,7 @@ const TaskDetails = () => {
 
   const fetchTask = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/api/tasks/${id}`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setTask(res.data);

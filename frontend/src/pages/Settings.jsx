@@ -73,7 +73,7 @@ const Settings = () => {
       toast.loading('Initializing payment...', { id: 'payment' });
       const token = localStorage.getItem('token');
       
-      const orderRes = await axios.post('http://localhost:5001/api/payment/create-order', 
+      const orderRes = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/payment/create-order', 
         { amount: 999, currency: 'INR', plan: 'Pro' }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -88,7 +88,7 @@ const Settings = () => {
         handler: async function (response) {
           toast.loading('Verifying payment...', { id: 'payment' });
           try {
-            await axios.post('http://localhost:5001/api/payment/verify', {
+            await axios.post((import.meta.env.VITE_API_URL || '') + '/api/payment/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature

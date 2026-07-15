@@ -27,7 +27,7 @@ const TaskList = () => {
   const fetchTasks = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5001/api/tasks', {
+      const res = await axios.get((import.meta.env.VITE_API_URL || '') + '/api/tasks', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setTasks(res.data);
@@ -48,7 +48,7 @@ const TaskList = () => {
             onClick={async () => {
               toast.dismiss(t.id);
               try {
-                await axios.delete(`http://localhost:5001/api/tasks/${id}`, {
+                await axios.delete(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, {
                   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 toast.success('Task deleted successfully');
