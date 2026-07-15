@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Lock, Zap, Activity, Eye, EyeOff } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 const IconGoogle = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,21 +49,12 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSuccess = async (credential) => {
     setIsLoading(true);
     try {
-      // Simulated Google OAuth Flow using existing backend endpoints
-      // In a real app, this would get the token from Google first
       toast.loading('Authenticating with Google...', { id: 'google' });
-      const googleUser = { name: 'Google User', email: 'demo@google.com', password: 'secureGooglePassword123!' };
-      
-      try {
-        const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/login', { email: googleUser.email, password: googleUser.password });
-        login(res.data, res.data.token);
-      } catch {
-        const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/register', googleUser);
-        login(res.data, res.data.token);
-      }
+      const res = await axios.post((import.meta.env.VITE_API_URL || '') + '/api/auth/google', { token: credential });
+      login(res.data, res.data.token);
       toast.success('Google Sign-In successful!', { id: 'google' });
       navigate('/dashboard');
     } catch (err) {
@@ -251,23 +243,20 @@ const Login = () => {
             <div style={{ flex: 1, height: '1px', backgroundColor: '#E5E7EB' }}></div>
           </div>
 
-          <button 
-            type="button" 
-            onClick={handleGoogleSignIn}
-            style={{ 
-              width: '100%', padding: '0.875rem',
-              backgroundColor: '#FFFFFF', color: '#0F172A',
-              border: '1px solid #E5E7EB', borderRadius: '14px', fontSize: '0.95rem', fontWeight: '600',
-              cursor: 'pointer', transition: 'all 0.2s',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#F8FAFC'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.05)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)'; }}
-          >
-            <IconGoogle size={20} />
-            Continue with Google
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                handleGoogleSuccess(credentialResponse.credential);
+              }}
+              onError={() => {
+                toast.error('Google Sign-In failed.');
+              }}
+              theme="outline"
+              size="large"
+              width="100%"
+              text="continue_with"
+            />
+          </div>
 
           <div style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.875rem', color: '#64748B' }}>
             Don't have an account? <Link to="/register" style={{ color: '#2563EB', fontWeight: '600', textDecoration: 'none' }}>Create Account</Link>

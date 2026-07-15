@@ -99,8 +99,60 @@ const getProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Authenticate with Google
+// @route   POST /api/auth/google
+// @access  Public
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const googleAuth = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      res.status(400);
+      throw new Error('No Google token provided');
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+
+    // If not, register them automatically
+    if (!user) {
+      // Generate a random secure password for OAuth users since they don't use passwords
+      const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
+      user = await User.create({
+        name,
+        email,
+        password: randomPassword,
+      });
+    }
+
+    // Login successful
+    res.json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    });
+
+  } catch (error) {
+    res.status(401);
+    next(new Error('Invalid Google token'));
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
+  googleAuth,
 };

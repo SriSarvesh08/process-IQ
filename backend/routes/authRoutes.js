@@ -4,11 +4,13 @@ const {
   registerUser,
   loginUser,
   getProfile,
+  googleAuth,
 } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.post('/google', googleAuth);
 router.get('/profile', protect, getProfile);
 
 module.exports = router;
