@@ -87,9 +87,11 @@ const TaskCreate = () => {
               required
             >
               <option value="" disabled>Select an operation...</option>
-              <option value="Text Summary">Text Summary</option>
+              <option value="Text Summarization">Text Summarization</option>
               <option value="Sentiment Analysis">Sentiment Analysis</option>
+              <option value="Entity Extraction">Entity Extraction</option>
               <option value="Keyword Extraction">Keyword Extraction</option>
+              <option value="Language Translation">Language Translation</option>
             </select>
           </div>
 

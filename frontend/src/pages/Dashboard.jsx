@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { 
   CheckCircle2, Clock, XCircle, Activity, 
   ArrowUpRight, ArrowDownRight, Plus, 
-  Cpu, Database, Network, Zap, List, FileText, ChevronRight, Settings, ExternalLink, HardDrive, Shield
+  Cpu, Database, Network, Zap, List, FileText, ChevronRight, Settings, ExternalLink, HardDrive, Shield,
+  MessageSquare, Box, Key, Globe
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -115,6 +116,14 @@ const Dashboard = () => {
     }
   };
 
+  const supportedOperations = [
+    { name: 'Text Summarization', desc: 'Condense long articles into key points', icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { name: 'Sentiment Analysis', desc: 'Determine emotional tone of text', icon: MessageSquare, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { name: 'Entity Extraction', desc: 'Identify names, places, and orgs', icon: Box, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { name: 'Keyword Extraction', desc: 'Extract most relevant topics', icon: Key, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { name: 'Language Translation', desc: 'Translate text across languages', icon: Globe, color: 'text-indigo-600', bg: 'bg-indigo-50' }
+  ];
+
   const cardStyle = {
     backgroundColor: '#FFFFFF',
     borderRadius: '18px',
@@ -138,6 +147,29 @@ const Dashboard = () => {
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-1">{greeting}, {user?.name?.split(' ')[0] || 'User'} 👋</h1>
             <p className="text-slate-500 font-medium">Welcome back. Here's today's processing overview.</p>
+          </div>
+        </div>
+
+        {/* Supported AI Operations */}
+        <div className="mb-4">
+          <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <Zap size={18} className="text-amber-500" />
+            Supported AI Operations
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {supportedOperations.map((op) => (
+              <motion.div 
+                key={op.name}
+                whileHover={{ y: -4, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.05)' }} 
+                className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm transition-all group flex flex-col items-start cursor-default"
+              >
+                <div className={`w-10 h-10 rounded-xl ${op.bg} ${op.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
+                  <op.icon size={20} strokeWidth={2.5} />
+                </div>
+                <h4 className="font-bold text-slate-900 text-sm mb-1">{op.name}</h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">{op.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
 
